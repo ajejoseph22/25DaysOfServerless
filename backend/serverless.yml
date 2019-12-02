@@ -1,0 +1,14 @@
+service: dreidel-app
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+
+functions:
+  Spinner: #Spinner function
+    handler: handler.spin
+    events:
+      - http:
+          path: /
+          method: get
+
