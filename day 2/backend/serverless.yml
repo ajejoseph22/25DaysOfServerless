@@ -1,0 +1,15 @@
+app: scheduler
+service: scheduler-app
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+
+  region: us-east-1
+  profile: personal
+
+functions:
+  alert:
+    handler: handler.alert
+    events:
+      - schedule: cron(0,25,30,35,39,40,45,49 7 13 12 ? *)
