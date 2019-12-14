@@ -13,7 +13,7 @@ plugins:
 
 resources:
   # DynamoDB
-  - ${file(resources/dynamodb-table.yml)}
+  - ${file(resources/dynamo-db.yml)}
 
 iamRoleStatements:
   - Effect: Allow
