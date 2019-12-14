@@ -1,7 +1,7 @@
 module.exports.storeImages = async event => {
   const { saveImageInDB } = require("./dynamodb-actions/index");
   console.log("EVENT", event);
-  const addedItems = event.body.added;
+  const addedItems = JSON.parse(event.body).added;
   const extension = ".png";
 
   return addedItems.map(item => {
