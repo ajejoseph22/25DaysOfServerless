@@ -11,3 +11,7 @@ provider:
 functions:
   storeImages:
     handler: handler.storeImages
+    events:
+      - http:
+          path: /
+          method: post

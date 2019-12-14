@@ -1,1 +1,3 @@
-module.exports.storeImages = async event => {};
+module.exports.storeImages = async event => {
+  return console.log("PAYLOAD", event);
+};
