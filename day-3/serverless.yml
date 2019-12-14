@@ -11,10 +11,6 @@ provider:
 plugins:
   - serverless-offline
 
-resources:
-  # DynamoDB
-  - ${file(resources/dynamo-db.yml)}
-
 iamRoleStatements:
   - Effect: Allow
     Action:
@@ -23,6 +19,7 @@ iamRoleStatements:
       - dynamodb:Scan
       - dynamodb:GetItem
       - dynamodb:PutItem
+    Resource: arn:aws:dynamodb:us-east-1:514260427086:table/images
 
 functions:
   storeImages:
@@ -32,3 +29,7 @@ functions:
           path: /
           method: post
           cors: true
+
+resources:
+  # DynamoDB
+  - ${file(resources/dynamo-db.yml)}
