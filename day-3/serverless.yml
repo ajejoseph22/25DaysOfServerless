@@ -8,6 +8,22 @@ provider:
   region: us-east-1
   profile: personal
 
+plugins:
+  - serverless-offline
+
+resources:
+  # DynamoDB
+  - ${file(resources/dynamodb-table.yml)}
+
+iamRoleStatements:
+  - Effect: Allow
+    Action:
+      - dynamodb:DescribeTable
+      - dynamodb:Query
+      - dynamodb:Scan
+      - dynamodb:GetItem
+      - dynamodb:PutItem
+
 functions:
   storeImages:
     handler: handler.storeImages
@@ -15,3 +31,4 @@ functions:
       - http:
           path: /
           method: post
+          cors: true

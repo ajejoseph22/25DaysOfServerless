@@ -5,9 +5,18 @@
   "main": "handler.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node handler.js"
+    "start": "sls offline start --port 4000"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.590.0",
+    "uuid": "^3.3.3"
+  },
+  "devDependencies": {
+    "@types/uuid": "^3.4.6",
+    "serverless-offline": "^5.12.1",
+    "serverless-webpack": "^5.3.1"
+  }
 }
