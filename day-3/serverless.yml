@@ -1,0 +1,13 @@
+app: webhooks
+service: webhooks-app
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+
+  region: us-east-1
+  profile: personal
+
+functions:
+  storeImages:
+    handler: handler.storeImages
