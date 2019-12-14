@@ -11,7 +11,8 @@ module.exports.storeImages = async event => {
         await saveImageInDB(item);
         return "success";
       } catch (err) {
-        return "error";
+        console.log("ERROR", err);
+        return err;
       }
     }
   });
