@@ -4,12 +4,15 @@ module.exports.storeImages = async event => {
   const addedItems = body.head_commit.added;
   const extension = ".png";
 
-  return addedItems.map(item => {
+  return addedItems.map(async item => {
     if (item.toLowerCase().endsWith(extension)) {
       console.log("FOUND...now executing");
-      saveImageInDB(item)
-        .then(res => res)
-        .catch(err => err);
+      try {
+        await saveImageInDB(item);
+        return "success";
+      } catch (err) {
+        return "error";
+      }
     }
   });
 };
