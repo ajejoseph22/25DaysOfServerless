@@ -62,7 +62,7 @@ module.exports.storeImages = async event => {
       return respond("Successfully saved PNGs", 201);
     } catch (err) {
       console.log("ERROR:", err);
-      return respond(err, 501);
+      return respond(err, 500);
     }
   } else {
     // no PNG images
