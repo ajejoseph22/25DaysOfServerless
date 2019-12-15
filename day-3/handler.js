@@ -35,7 +35,6 @@ module.exports.storeImages = async event => {
     await dynamoDB.batchWrite(params).promise();
   };
 
-  console.log("EVENT", event);
   const body = JSON.parse(event.body);
   const commits = body.commits;
   const extension = ".png";
