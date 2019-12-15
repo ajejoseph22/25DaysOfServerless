@@ -1,4 +1,4 @@
-module.exports.storeImages = (event, context, callback) => {
+module.exports.storeImages = async event => {
   const uuid = require("uuid");
   const AWS = require("aws-sdk");
 
@@ -14,35 +14,59 @@ module.exports.storeImages = (event, context, callback) => {
     }
   });
 
-  const saveImageInDB = item => {
+  const saveImagesInDB = async () => {
     const params = {
-      TableName: "images",
-      Item: {
-        id: uuid(),
-        item
+      RequestItems: {
+        images: []
       }
     };
 
-    dynamoDB.put(params, (err, data) => {
-      if (err) {
-        callback(err, respond(err, 404));
-      }
-      callback(null, respond(data, 201));
+    imageLinks.map(item => {
+      params.RequestItems["images"].push({
+        PutRequest: {
+          Item: {
+            id: uuid(),
+            item
+          }
+        }
+      });
     });
+
+    await dynamoDB.batchWrite(params).promise();
   };
 
   console.log("EVENT", event);
   const body = JSON.parse(event.body);
-  const addedItems = body.head_commit.added;
+  const commits = body.commits;
   const extension = ".png";
+  const urlPrefix = "https://raw.githubusercontent.com";
+  const repo = `${body.repository.full_name}/master`;
+  const imageLinks = [];
 
-  addedItems &&
-    addedItems.map(item => {
-      if (item.toLowerCase().endsWith(extension)) {
-        const link = `https://raw.githubusercontent.com/${body.repository.full_name}/master/${item}`;
-        saveImageInDB(link);
-      }
-    });
+  //loop through all commits in the push
+  commits.map(commit => {
+    //if files were added in commit
+    if (commit.added) {
+      let addedItems = commit.added;
+      addedItems.map(item => {
+        if (item.toLowerCase().endsWith(extension)) {
+          imageLinks.push(`${urlPrefix}/${repo}/${item}`);
+        }
+      });
+    }
+  });
 
-  callback(null, respond("No PNG received", 201));
+  //if there are PNG images
+  if (imageLinks.length) {
+    try {
+      await saveImagesInDB();
+      return respond("Successfully saved PNGs", 201);
+    } catch (err) {
+      console.log("ERROR:", err);
+      return respond(err, 501);
+    }
+  } else {
+    // no PNG images
+    return respond("No PNG found", 201);
+  }
 };
