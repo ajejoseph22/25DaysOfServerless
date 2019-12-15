@@ -12,9 +12,15 @@ const respond = (result, statusCode) => ({
 });
 
 module.exports.listDishes = async () => {
-  const response = await dynamoDB.scan(baseParams).promise();
+  try {
+    const response = await dynamoDB.scan(baseParams).promise();
 
-  return respond(response.Items, 200);
+    return respond(response.Items, 200);
+  } catch (err) {
+    console.log("ERROR", err);
+
+    return respond(err, 500);
+  }
 };
 
 module.exports.addUpdateDish = async event => {
@@ -43,6 +49,7 @@ module.exports.addUpdateDish = async event => {
     );
   } catch (err) {
     console.log("ERROR", err);
+
     return respond(err, 500);
   }
 };
@@ -68,6 +75,7 @@ module.exports.deleteDish = async event => {
     return respond("Successfully deleted!", 200);
   } catch (err) {
     console.log("ERROR", err);
+
     return respond(err, 500);
   }
 };
