@@ -25,13 +25,13 @@ functions:
       - http:
           path: /new
           method: post
-  updateDish:
+  UpdateDish:
     handler: handler.addUpdateDish
     events:
       - http:
           path: /update
           method: put
-  deleteDish:
+  DeleteDish:
     handler: handler.deleteDish
     events:
       - http:
