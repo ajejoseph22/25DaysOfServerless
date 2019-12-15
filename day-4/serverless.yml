@@ -1,0 +1,39 @@
+app: dish-api
+service: dish-api-service
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+
+  region: us-east-1
+  profile: personal
+
+resources:
+  # DynamoDB
+  - ${file(resources/dynamo-db.yml)}
+
+functions:
+  ListDishes:
+    handler: handler.listDishes
+    events:
+      - http:
+          path: /list
+          method: get
+  AddDish:
+    handler: handler.addUpdateDish
+    events:
+      - http:
+          path: /new
+          method: post
+  updateDish:
+    handler: handler.addUpdateDish
+    events:
+      - http:
+          path: /update
+          method: put
+  deleteDish:
+    handler: handler.deleteDish
+    events:
+      - http:
+          path: /remove
+          method: delete
