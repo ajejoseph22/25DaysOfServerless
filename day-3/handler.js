@@ -66,6 +66,6 @@ module.exports.storeImages = async event => {
     }
   } else {
     // no PNG images
-    return respond("No PNG found", 201);
+    return respond("No PNG found", 200);
   }
 };
